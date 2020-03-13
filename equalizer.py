@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (QMainWindow, 
-                              QFileDialog, QApplication)
+                              QFileDialog, QApplication, QMessageBox)
 from pyqtgraph.Qt import QtCore
 from scipy import signal
 import sys
@@ -66,11 +66,15 @@ class Example(QMainWindow):
              self.ui.label_3.setText("Fourier")       
 
     def open_audio(self):
-        
-        self.fname = QFileDialog().getOpenFileName(self, 'Open file', '/home',"signals(*.wav )")
-        self.select_equalizer()
-        self.ui.comboBox.currentIndexChanged.connect(self.select_equalizer)
-
+        if str(self.ui.comboBox.currentText()) == "EQ1" or str(self.ui.comboBox.currentText()) == "EQ2":
+            QMessageBox.about(self, "Alarm", "Please, set the the current box to Original and open file then do your edits")
+        elif str(self.ui.comboBox.currentText()) == "Original":
+            self.fname = QFileDialog().getOpenFileName(self, 'Open file', '/home',"signals(*.wav )")
+            if self.fname[0]!='':
+                self.select_equalizer()
+                self.ui.comboBox.currentIndexChanged.connect(self.select_equalizer)
+            else:
+                pass
 
     def checked_window(self):
 
@@ -280,7 +284,7 @@ class Example(QMainWindow):
         if window == "hanning":
             windowing = np.hanning(self.bandwidth*2)
         else:
-            windowing = signal.hamming(self.bandwidth*2)
+            windowing = np.hamming(self.bandwidth*2)
         return windowing
 
 
