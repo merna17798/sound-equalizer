@@ -14,9 +14,7 @@ from scipy.io import wavfile
 from IPython.display import Audio 
 from popup import Ui_Dialog as Form
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 from newguiTest import Ui_MainWindow
-
 class Example(QMainWindow):
 
     def __init__(self):
@@ -41,9 +39,9 @@ class Example(QMainWindow):
         self.initUI()
 
     def initUI(self):
-
         self.ui.actionopen.triggered.connect(self.open_audio)
         self.show()
+
     def label_changes(self,result):
         if str(self.ui.comboBox_2.currentText()) =="Rectangular" and (str(self.ui.comboBox.currentText() =="EQ1") or str(self.ui.comboBox.currentText()) == "EQ2"):
             self.ui.label_2.setText("Rectangular res_"+str(result))
@@ -62,9 +60,11 @@ class Example(QMainWindow):
             self.label_changes(res)
         elif str(self.ui.comboBox.currentText()) == "EQ2" :
             res=2
-            self.label_changes(res)            
-    
-                
+            self.label_changes(res)   
+        elif str(self.ui.comboBox.currentText()) == "Original":
+             self.ui.label_2.setText("Original")
+             self.ui.label_3.setText("Fourier")       
+
     def open_audio(self):
         
         self.fname = QFileDialog().getOpenFileName(self, 'Open file', '/home',"signals(*.wav )")
